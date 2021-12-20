@@ -13,13 +13,13 @@ import {
   ContainerGraus,
   ArrowBack,
 } from './styles';
-import { IWeather } from '../../interfaces/Weather';
 import { CustomText } from '../../components';
 import { theme } from '../../styles';
 import { formatDegraus } from '../../utils/formatToCelsius';
 import { Line } from './components/Line';
 import { toCapitalize } from '../../utils/capitalize';
 import { toDate, toHour } from '../../utils/formatDate';
+import { IWeather } from '../../store/modules/weather/types';
 
 function Details() {
   const route = useRoute();

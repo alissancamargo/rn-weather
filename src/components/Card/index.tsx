@@ -4,8 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import { CustomText } from '..';
 
-import { IWeather } from '../../interfaces/Weather';
-
 import {
   Container,
   ContainerGraus,
@@ -18,6 +16,7 @@ import {
 import { theme } from '../../styles';
 import { formatDegraus } from '../../utils/formatToCelsius';
 import { toCapitalize } from '../../utils/capitalize';
+import { IWeather } from '../../store/modules/weather/types';
 
 interface CardProps {
   infos: IWeather;

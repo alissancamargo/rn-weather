@@ -1,3 +1,15 @@
+import type { ActionType } from 'typesafe-actions';
+
+import type * as actions from './actions';
+
+export type WeatherAction = ActionType<typeof actions>;
+
+export interface WeatherState {
+  readonly weathers: IWeather[];
+  readonly weather: IWeather;
+  readonly loading: boolean;
+}
+
 export interface IWeather {
   coord: {
     lon: number;
@@ -41,3 +53,5 @@ export interface IWeather {
   name: string;
   cod: number;
 }
+
+export type EvaluationType = 'like' | 'dislike';

@@ -3,6 +3,8 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import AppLoading from 'expo-app-loading';
 import { StatusBar } from 'expo-status-bar';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import {
   useFonts,
   Roboto_300Light,
@@ -19,6 +21,7 @@ import {
 
 import { theme } from './styles';
 import Routes from './routes';
+import { persistor, store } from './store';
 
 if (__DEV__) {
   import('./config/ReactotronConfig').then(() =>
@@ -44,10 +47,17 @@ export default function App() {
     return <AppLoading />;
   } else {
     return (
-      <ThemeProvider theme={theme}>
-        <StatusBar style="dark" backgroundColor={theme.colors.GREEN_LIGHTER} />
-        <Routes />
-      </ThemeProvider>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <ThemeProvider theme={theme}>
+            <StatusBar
+              style="dark"
+              backgroundColor={theme.colors.GREEN_LIGHTER}
+            />
+            <Routes />
+          </ThemeProvider>
+        </PersistGate>
+      </Provider>
     );
   }
 }

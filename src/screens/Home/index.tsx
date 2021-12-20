@@ -1,44 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import * as Location from 'expo-location';
 import { Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Container, Content, List, Title, Loading } from './styles';
-import { api } from '../../services/api';
-import { weatherApiKey } from '../../config/env';
-import { locations } from '../../constants/location';
+
 import { theme } from '../../styles';
-import { IWeather } from '../../interfaces/Weather';
 import { Card } from '../../components';
+import { IWeather } from '../../store/modules/weather/types';
+import { StoreState } from '../../store';
+import {
+  getWeatherByLatLongRequest,
+  getWeatherRequest,
+} from '../../store/modules/weather/actions';
 
 const Home = () => {
-  const [weathers, setWeathers] = useState<IWeather[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [location, setLocation] = useState<Location.LocationObject | null>(
-    null,
+  const dispatch = useDispatch();
+
+  const weathersReducer = useSelector(
+    (state: StoreState) => state.weather.weathers,
   );
+  const weatherReducer = useSelector(
+    (state: StoreState) => state.weather.weather,
+  );
+  const loading = useSelector((state: StoreState) => state.weather.loading);
+
+  const [weathers, setWeathers] = useState<IWeather[]>([]);
+
   const [myLocation, setMyLocation] = useState<IWeather | null>(null);
 
   useEffect(() => {
-    const weathersList: IWeather[] = [];
+    dispatch(getWeatherRequest());
+  }, [dispatch]);
 
-    async function loadWeather() {
-      setLoading(true);
-      for await (const locale of locations) {
-        const element = locale;
-
-        const response = await api.get(
-          `weather?q=${element.city}&lang=pt_br&appid=${weatherApiKey}`,
-        );
-
-        weathersList.push(response.data);
-      }
-
-      setWeathers(weathersList);
-      setLoading(false);
+  useEffect(() => {
+    if (weathersReducer.length > 0) {
+      setWeathers(weathersReducer);
     }
-
-    loadWeather();
-  }, []);
+  }, [weathersReducer]);
 
   useEffect(() => {
     (async () => {
@@ -51,22 +50,20 @@ const Home = () => {
       }
 
       const newLocation = await Location.getCurrentPositionAsync({});
-      setLocation(newLocation);
+      dispatch(
+        getWeatherByLatLongRequest(
+          newLocation.coords.latitude,
+          newLocation.coords.longitude,
+        ),
+      );
     })();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    if (location) {
-      async function handleMyLocation() {
-        const response = await api.get(
-          `weather?lat=${location.coords.latitude}&lon=${location.coords.longitude}&lang=pt_br&appid=${weatherApiKey}`,
-        );
-        setMyLocation(response.data);
-      }
-
-      handleMyLocation();
+    if (Object.keys(weatherReducer).length > 0) {
+      setMyLocation(weatherReducer);
     }
-  }, [location]);
+  }, [weatherReducer]);
 
   if (loading) {
     return (
