@@ -8,7 +8,7 @@ interface ButtonProps {
   children: ReactNode;
 }
 
-function Button({ children }: ButtonProps) {
+export const Button = ({ children }: ButtonProps) => {
   return (
     <Container>
       <Text>Button</Text>
@@ -16,5 +16,3 @@ function Button({ children }: ButtonProps) {
     </Container>
   );
 };
-
-export default Button;

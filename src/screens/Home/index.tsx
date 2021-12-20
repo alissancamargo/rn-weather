@@ -1,27 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
 
-import {
-  ActivityIndicator,
-  Text as TextRN,
-  TouchableOpacity,
-} from 'react-native';
-
-import { Container, List } from './styles';
+import { Container, Content, List, Title, Loading } from './styles';
 import { api } from '../../services/api';
 import { weatherApiKey } from '../../config/env';
 import { locations } from '../../constants/location';
-import { CustomText } from '../../components/CustomText';
 import { theme } from '../../styles';
+import { IWeather } from '../../interfaces/Weather';
+import { Card } from '../../components';
 
-function Home() {
-  const { navigate } = useNavigation();
-
-  const [weathers, setWeathers] = useState([]);
+const Home = () => {
+  const [weathers, setWeathers] = useState<IWeather[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    let weathersList: any[] = [];
+    const weathersList: IWeather[] = [];
 
     async function loadWeather() {
       setLoading(true);
@@ -45,33 +37,29 @@ function Home() {
   if (loading) {
     return (
       <Container>
-        <ActivityIndicator color={theme.colors.BLACK} size="large" />
+        <Loading color={theme.colors.BLACK} size="large" />
       </Container>
     );
   }
 
   return (
     <Container>
-      <TextRN>Home</TextRN>
-      <List
-        data={weathers}
-        keyExtractor={item => String(item.name)}
-        renderItem={({ item }) => (
-          <CustomText
-            color={theme.colors.BLACK}
-            fontFamily={theme.fonts.MEDIUM}
-            fontSize={2}
-          >
-            {item.name}
-          </CustomText>
-        )}
-      />
-
-      <TouchableOpacity onPress={() => navigate('Details')}>
-        <TextRN>Navegar</TextRN>
-      </TouchableOpacity>
+      <Content>
+        <Title
+          color={theme.colors.DARK}
+          fontSize={2}
+          fontFamily={theme.fonts.BOLD}
+        >
+          Weather
+        </Title>
+        <List
+          data={weathers}
+          keyExtractor={(item: IWeather) => String(item.id)}
+          renderItem={({ item }) => <Card infos={item as IWeather} />}
+        />
+      </Content>
     </Container>
   );
-}
+};
 
 export default Home;

@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import AppLoading from 'expo-app-loading';
+import { StatusBar } from 'expo-status-bar';
 import {
   useFonts,
   Roboto_300Light,
@@ -38,6 +39,7 @@ export default function App() {
   } else {
     return (
       <ThemeProvider theme={theme}>
+        <StatusBar style="dark" backgroundColor={theme.colors.GREEN_LIGHTER} />
         <Routes />
       </ThemeProvider>
     );
