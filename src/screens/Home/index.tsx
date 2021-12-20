@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import * as Location from 'expo-location';
+import { Alert } from 'react-native';
 
 import { Container, Content, List, Title, Loading } from './styles';
 import { api } from '../../services/api';
@@ -11,6 +13,10 @@ import { Card } from '../../components';
 const Home = () => {
   const [weathers, setWeathers] = useState<IWeather[]>([]);
   const [loading, setLoading] = useState(false);
+  const [location, setLocation] = useState<Location.LocationObject | null>(
+    null,
+  );
+  const [myLocation, setMyLocation] = useState<IWeather | null>(null);
 
   useEffect(() => {
     const weathersList: IWeather[] = [];
@@ -34,6 +40,34 @@ const Home = () => {
     loadWeather();
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert(
+          'Atenção!, A permissão para acessar a Localização foi negada',
+        );
+        return;
+      }
+
+      const newLocation = await Location.getCurrentPositionAsync({});
+      setLocation(newLocation);
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (location) {
+      async function handleMyLocation() {
+        const response = await api.get(
+          `weather?lat=${location.coords.latitude}&lon=${location.coords.longitude}&lang=pt_br&appid=${weatherApiKey}`,
+        );
+        setMyLocation(response.data);
+      }
+
+      handleMyLocation();
+    }
+  }, [location]);
+
   if (loading) {
     return (
       <Container>
@@ -44,7 +78,7 @@ const Home = () => {
 
   return (
     <Container>
-      <Content>
+      <Content showsVerticalScrollIndicator={false}>
         <Title
           color={theme.colors.DARK}
           fontSize={2}
@@ -52,6 +86,7 @@ const Home = () => {
         >
           Weather
         </Title>
+        {myLocation && <Card infos={myLocation} />}
         <List
           data={weathers}
           keyExtractor={(item: IWeather) => String(item.id)}

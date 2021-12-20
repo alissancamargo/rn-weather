@@ -20,6 +20,7 @@ export const List = styled.FlatList.attrs({
   },
 })`
   flex: 1;
+  padding-bottom: 40px;
 `;
 
 export const Title = styled(CustomText)`
