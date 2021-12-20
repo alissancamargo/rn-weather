@@ -16,6 +16,8 @@ import {
 } from './styles';
 
 import { theme } from '../../styles';
+import { formatDegraus } from '../../utils/formatToCelsius';
+import { toCapitalize } from '../../utils/capitalize';
 
 interface CardProps {
   infos: IWeather;
@@ -24,15 +26,9 @@ interface CardProps {
 export const Card = ({ infos }: CardProps) => {
   const navigation = useNavigation();
 
-  function formatDegraus(graus: number) {
-    const toDegraus = parseInt(String(graus - 275), 10);
-
-    return toDegraus.toString();
-  }
-
   const handlePress = useCallback(
-    (waether: IWeather) => {
-      navigation.navigate('Details', { waether });
+    (weather: IWeather) => {
+      navigation.navigate('Details', weather);
     },
     [navigation],
   );
@@ -62,7 +58,7 @@ export const Card = ({ infos }: CardProps) => {
           color={theme.colors.GREEN_DARK}
           style={{ width: 100 }}
         >
-          {infos.weather[0].description}
+          {toCapitalize(infos.weather[0].description)}
         </CustomText>
         <CustomText
           fontFamily={theme.fonts.BOLD}
