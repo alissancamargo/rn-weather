@@ -20,6 +20,12 @@ import {
 import { theme } from './styles';
 import Routes from './routes';
 
+if (__DEV__) {
+  import('./config/ReactotronConfig').then(() =>
+    console.log('Reactotron Configured'),
+  );
+}
+
 export default function App() {
   let [fontsLoaded] = useFonts({
     Roboto_300Light,

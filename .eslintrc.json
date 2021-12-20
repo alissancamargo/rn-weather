@@ -28,6 +28,9 @@
     "react/function-component-definition": "off",
     "no-inner-declarations": "off",
     "array-callback-return": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-console": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "react/jsx-filename-extension": [
