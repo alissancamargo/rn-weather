@@ -1,8 +1,6 @@
-<div style="background: #00F; width: 100%;">
-  <h1 align="center">
-      <img alt="WiT" title="#WiT" src="src/assets/logo.png" width="200px" />
-  </h1>
-</div>
+<h1 align="center">
+  <img alt="WiT" title="#WiT" src="src/assets/logo.png" width="200px" />
+</h1>
 
 ## 💻 Project
 
