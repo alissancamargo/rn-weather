@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="WiT" title="#WiT" src="src/assets/logo.png" width="200px" />
+  <img alt="WiT" title="#WiT" src="src/assets/logo-wit.png" width="200px" />
 </h1>
 
 ## 💻 Project
